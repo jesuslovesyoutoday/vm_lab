@@ -1,8 +1,12 @@
 import csv
+from math import e
 from math import pi
 from math import cos
 import numpy as np
 import matplotlib.pyplot as plt
+
+def func(x):
+    return pow(10, x)
 
 def first_norma(y, Y):
     dy = y-Y
@@ -37,49 +41,46 @@ def newton_interpolate(diff, nodes, x):
 
 def uni_grid(N, x):
     
-    nodes = np.arange(-1, 1, 2/N)
-    y_n   = [pow(10, x) for x in nodes]
+    nodes = np.linspace(-1, 1, N)
+    y_n = [func(x) for x in nodes]
     diff = [y_n]
-    
+    print('x_ravn: ', nodes)
+
     return newton_interpolate(diff, nodes, x)
     
  
 def chebishev_grid(N, x):
     
     nodes = np.array([cos((pi + 2 * pi * i)/(2*N)) for i in range(N)])
-    y_n = [pow(10, x) for x in nodes]
+    nodes = np.flip(nodes)
+    print('x_cheb: ', nodes)
+    y_n = [func(x) for x in nodes]
     diff = [y_n]
     
     return newton_interpolate(diff, nodes, x)
 
    
-x = np.arange(-1, 1, 2/10000)
-y = np.array([pow(10, i) for i in x])
+x = np.linspace(-1, 1, 10000)
+y = np.array([func(i) for i in x])
 
 n  = []
 n1 = []
-N_ = np.arange(3, 100, 1)
+N_ = np.arange(3, 50, 1)
 
 for N in N_:
     print("Counting ", N, "nodes")
     
     Y = uni_grid(N, x)
-    
-    """print(Y)
-    print(y)
-    print(x)
-    with open('test1.csv', 'w') as f:
-        writer = csv.writer(f, delimiter=',')
-        writer.writerows(zip(x,Y))
-    with open('test2.csv', 'w') as f:
-        writer = csv.writer(f, delimiter=',')
-        writer.writerows(zip(x,y))
-    break"""
-    
     n.append(first_norma(y, Y))
     
     Y1 = chebishev_grid(N, x)
     n1.append(first_norma(y, Y1))
+    
+    """plt.plot(x, y, color = 'g')
+    plt.scatter(x, Y, color = 'r')
+    plt.scatter(x, Y1, color = 'b')
+    plt.show()
+    plt.grid()"""
 
 with open('uni.csv', 'w') as f:
     writer = csv.writer(f, delimiter=',')
