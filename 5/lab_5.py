@@ -102,11 +102,11 @@ def simpson(h):
     return I
 
 def gauss():
-    a = 0
-    b = pi/2
-    x1 = (pow(1/3, 1/2) * (b - a) + a + b)/2
-    x2 = (-pow(1/3, 1/2) * (b - a) + a + b)/2
-    I = (func1(x1) + func1(x2)) * pi/4
+    a = 0                                        #
+    b = pi/2                                     #
+    x1 = (pow(1/3, 1/2) * (b - a) + a + b)/2     # doesn't work properly
+    x2 = (-pow(1/3, 1/2) * (b - a) + a + b)/2    #
+    I = (func1(x1) + func1(x2)) * pi/4           #
     return I
 
 def gauss_2(N):
@@ -124,6 +124,11 @@ def gauss_2(N):
         bi += h
     return I
 
+def uzly(h):
+    inter = pi/2
+    print([inter/i for i in h])
+    
+
 h = step_choose()
 print('шаги: ', h)
 print('метод прямоугольников (левая)', rect_left(h[0]))
@@ -133,5 +138,6 @@ print('метод трапеций', trap(h[3]))
 print('метод 3/8', rule_3_8(h[4]))
 print('метод симпсона', simpson(h[5]))
 print('метод гаусса', gauss_2(200))
+uzly(h)
 
 
