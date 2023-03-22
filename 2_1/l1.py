@@ -20,12 +20,13 @@ def print_results(Y, Y_, a, b, sections):
     d = norm(y, y_)
     df = pd.DataFrame({'x': x, 'Y1': y[0], 'Y*1': y_[0], 'delta1': d[0], 'Y2': y[1], 'Y*2': y_[1], 'delta2': d[1]})
     print(df)
+    print('\nmax delta: ', max(d[0].max(), d[1].max()))
     df.to_csv('out.csv', sep = ',', index=False)
 
 def norm(Y, Y_):
     Y = np.array(Y)
     Y_ = np.array(Y_)
-    return (np.abs(Y[0] - Y_[0]).max(), np.abs(Y[1] - Y_[1]).max())
+    return (np.abs(Y[0] - Y_[0]), np.abs(Y[1] - Y_[1]))
 
 def func(Y, J):
     return np.matmul(J,Y.transpose())
@@ -66,8 +67,11 @@ def implicit_euler(x, NU, J, nodes, h):
         #y1 = (Y1[i]*(1+99*h) + Y2[i]*250*h)/(-199*h*h + 198*h + 1)
         #y2 = (y1*(99*h+1) - Y1[i])/(250*h)
 
-        y1 = (250*h*Y2[i] + Y1[i]*(1+99*h))/((1+99*h)**2 - 1000*(h**2))
-        y2 = (40*h*y1 + Y2[i])/(1+99*h) 
+        #y1 = (250*h*Y2[i] + Y1[i]*(1+99*h))/((1+99*h)**2 - 1000*(h**2))
+        #y2 = (40*h*y1 + Y2[i])/(1+99*h)
+
+        y1 = (Y1[i]*(1+99*h) + 250*h*Y2[i]) / ((1+99*h)**2 - 10000*(h**2))
+        y2 = (Y2[i] + 40*h*y1) / (1 + 99*h) 
         Y1.append(y1)
         Y2.append(y2)        
     return ([Y1, Y2])
@@ -79,7 +83,7 @@ A = int(input("A = "))
 B = int(input("B = "))
 NU = np.array([A, B])
 a = 0
-b = 1
+b = 100
 l = b - a
 x = np.linspace(a, b, nodes)
 h = float(l/(nodes))
@@ -92,8 +96,10 @@ Y_ = np.array(implicit_euler(x, NU, J, nodes, h))
 #Y_ = explicit_euler(x, NU, J, nodes, h).transpose()
 
 print_results(Y, Y_, a, b, sections)
-plt.plot(x, Y[1], 'r', label = 'аналитическое')
-plt.plot(x, Y_[1], 'b', label = 'численное')
+plt.plot(x, Y[1], 'r', label = 'аналитическое 2')
+plt.plot(x, Y_[1], 'b', label = 'численное 2')
+#plt.plot(x, Y[0], 'r', label = 'аналитическое 1')
+#plt.plot(x, Y_[0], 'b', label = 'численное 1')
 plt.legend()
 plt.grid()
 plt.show()    
