@@ -113,14 +113,14 @@ def vstr_progonka(nodes, x0, xa, xb, x, h, u0, u1):
     beta_b[a-1] = (db[a-1]-cb[a-1]*u1)/bb[a-1]
     
 
-    for i in range(1, ind_a):
+    for i in range(1, ind_a-1):
         alpha_a[i] = -aa[i+1]/(ba[i+1] + ca[i+1] * alpha_a[i-1])
         beta_a[i] = (da[i+1] - ca[i+1] * beta_a[i-1])/(ba[i+1] + ca[i+1] * alpha_a[i-1])
     for i in range(a-2, 0, -1):
         alpha_b[i] = -cb[i]/(bb[i] + ab[i] * alpha_b[i+1])
         beta_b[i] = (db[i] - ab[i] * beta_b[i+1])/(bb[i] + ab[i] * alpha_b[i+1])
-   
-    ua[ind_a] = ub[0] = (ka[ind_a]*beta_a[ind_a-1] + kb[0]*beta_b[0]) / (ka[ind_a]*(1 - alpha_a[ind_a-1]) + kb[0]*(1 - alpha_b[0]))
+
+    ua[ind_a] = ub[0] = (ka[ind_a]*beta_a[ind_a-2] + kb[0]*beta_b[1]) / (ka[ind_a]*(1 - alpha_a[ind_a-2]) + kb[0]*(1 - alpha_b[1]))
 
     for i in range(1, a):
         ub[i] = ub[i-1] * alpha_b[i] + beta_b[i]
@@ -129,26 +129,6 @@ def vstr_progonka(nodes, x0, xa, xb, x, h, u0, u1):
         ua[i] = ua[i + 1] * alpha_a[i-1] + beta_a[i-1]
 
     u = [ua, ub]
-    
-    """a = np.delete(np.concatenate((aa, ab), axis=0), [0, len(x) - 1])
-    b = np.delete(np.concatenate((ba, bb), axis=0), [0, len(x) - 1])
-    c = np.delete(np.concatenate((ca, cb), axis=0), [0, len(x) - 1])
-    d = np.delete(np.concatenate((da, db), axis=0), [0, len(x) - 1])
-    
-    print(a)
-    print(b)
-    print(c)
-    
-    col = np.zeros(len(x)-2)
-    B_ = np.c_[col, np.diag(b), col]
-    C_ = np.c_[np.diag(c, -1), col, col]
-    A_ = np.c_[col, col, np.diag(a, 1)]
-    print(A_)
-    print(B_)
-    print(C_)
-    A = A_ + C_ + B_
-    print(A)"""
-     
     
     return u
 
@@ -175,9 +155,9 @@ u = np.concatenate((u_mod[0], u_mod[1]), axis=0)
 u_ = np.array(vstr_progonka(nodes, x0, xa, xb, x, h, u0, u1), dtype=object)
 u_num = np.concatenate((u_[0], u_[1]), axis=0)
 
-#print_results(u, u_num, 0, 1, nodes - 1)
+print_results(u, u_num, 0, 1, nodes - 1)
 
-#plt.plot(x, u, label='модельная задача')
-#plt.plot(x, u_num, label='численное решение')
-#plt.legend()
-#plt.show()
+plt.plot(x, u, label='модельная задача')
+plt.plot(x, u_num, label='численное решение')
+plt.legend()
+plt.show()
