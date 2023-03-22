@@ -99,7 +99,7 @@ def vstr_progonka(nodes, x0, xa, xb, x, h, u0, u1):
     da = -fa*h**2
     db = -fb*h**2
 
-    """alpha_a = np.zeros(ind_a)
+    alpha_a = np.zeros(ind_a)
     beta_a = np.zeros(ind_a)
     
     alpha_a[0] = -aa[1]/ba[1]
@@ -128,9 +128,9 @@ def vstr_progonka(nodes, x0, xa, xb, x, h, u0, u1):
     for i in range(ind_a - 1, 0, -1):
         ua[i] = ua[i + 1] * alpha_a[i-1] + beta_a[i-1]
 
-    u = [ua, ub]"""
+    u = [ua, ub]
     
-    a = np.delete(np.concatenate((aa, ab), axis=0), [0, len(x) - 1])
+    """a = np.delete(np.concatenate((aa, ab), axis=0), [0, len(x) - 1])
     b = np.delete(np.concatenate((ba, bb), axis=0), [0, len(x) - 1])
     c = np.delete(np.concatenate((ca, cb), axis=0), [0, len(x) - 1])
     d = np.delete(np.concatenate((da, db), axis=0), [0, len(x) - 1])
@@ -147,7 +147,7 @@ def vstr_progonka(nodes, x0, xa, xb, x, h, u0, u1):
     print(B_)
     print(C_)
     A = A_ + C_ + B_
-    print(A)
+    print(A)"""
      
     
     return u
