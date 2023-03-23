@@ -133,7 +133,6 @@ def vstr_progonka(nodes, x0, xa, xb, x, h, u0, u1):
     return u
 
 nodes = int(input("number of sections: ")) + 1
-    
 x = np.linspace(0, 1, nodes)
 h = 1/(nodes - 1)
 
@@ -154,6 +153,40 @@ u = np.concatenate((u_mod[0], u_mod[1]), axis=0)
 
 u_ = np.array(vstr_progonka(nodes, x0, xa, xb, x, h, u0, u1), dtype=object)
 u_num = np.concatenate((u_[0], u_[1]), axis=0)
+
+"""d = []
+n = []
+while (nodes <= 1000000):
+
+    x = np.linspace(0, 1, nodes)
+    h = 1/(nodes - 1)
+
+    u0 = 1
+    u1 = 0
+    x0 = 1/(sqrt(2))
+
+    x_ = array_division(x, x0)
+    xa = np.array(x_[0])
+    xb = np.array(x_[1])
+
+    k = [1, exp(sin(x0))]
+    q = [1, 2]
+    f = [exp(x0), exp(x0)]
+    
+    u_mod = np.array(model(x0, u0, xa, xb, u1, k, f, q), dtype=object)
+    u = np.concatenate((u_mod[0], u_mod[1]), axis=0)
+
+    u_ = np.array(vstr_progonka(nodes, x0, xa, xb, x, h, u0, u1), dtype=object)
+    u_num = np.concatenate((u_[0], u_[1]), axis=0)
+    d.append(norm(u, u_num).max())
+    n.append(nodes)
+    nodes *= 10
+    print(nodes)
+
+d = np.array(d)
+plt.plot(np.log(n), d)
+plt.grid()
+plt.show()"""
 
 print_results(u, u_num, 0, 1, nodes - 1)
 
