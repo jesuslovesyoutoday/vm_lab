@@ -15,9 +15,13 @@ def save_results(u, f_path, n):
     writer = csv.writer(f)
     writer.writerow(U)
     f.close()
-
-def ugolok(u0, h, t, T, L, nodes, f_path, x):
-
+    
+def lax_ven(u0, K, T, nodes, f_path, x):
+    
+    a = 1 - K**2
+    b = K*(K-1)/2
+    c = K*(K+1)/2
+    
     u_prev = u0
     save_results(u_prev, f_path, 0)
     for j in range(T):
@@ -27,17 +31,20 @@ def ugolok(u0, h, t, T, L, nodes, f_path, x):
         plt.grid()
         plt.show()
     
-        u_next = np.zeros(nodes)
+        u_next = np.zeros(nodes) 
+        
+        for i in range(len(u0)-2):
+            u_next[i+1] = u_prev[i+1] * a + u_prev[i+2] * b + u_prev[i] * c
             
-        for i in range(len(u0)-1):
-            u_next[i+1] = u_prev[i]*t/h + u_prev[i+1]*(1-t/h)
-                
-        u_next[0] = u_next[len(u_next)-1]
+        i += 1
+        u_next[i+1] = u_prev[i+1] * a + u_prev[0] * b + u_prev[i] * c
+        u_next[0] = u_next[nodes-1]
+        
         save_results(u_next, f_path, j+1)
         u_prev = u_next
-        
+
     
-f_path = "out_ugolok.csv"
+f_path = "out_lax-ven.csv"
 
 if (os.path.exists(f_path)):
     os.remove(f_path)
@@ -53,6 +60,4 @@ nodes = int(L/h + 1)
 x = np.linspace(0, L, nodes)
 u0 = np.sin(4*pi*x/L)
 
-ugolok(u0, h, t, T, L, nodes, f_path, x)
-
-
+lax_ven(u0, K, T, nodes, f_path, x)
