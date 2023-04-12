@@ -16,7 +16,7 @@ def save_results(u, f_path, n):
     writer.writerow(U)
     f.close()
     
-def lax_ven(u0, K, T, nodes, f_path, x):
+def lax_ven(u0, K, T, nodes, f_path, x, t, step_plot):
     
     a = 1 - K**2
     b = K*(K-1)/2
@@ -24,12 +24,12 @@ def lax_ven(u0, K, T, nodes, f_path, x):
     
     u_prev = u0
     save_results(u_prev, f_path, 0)
-    for j in range(T):
-    
-        plt.plot(x, u_prev)
-        plt.title("num: " + str(j))
-        plt.grid()
-        plt.show()
+    j = 0
+    count = 0
+    while (j <= T):
+        if (count % step_plot) == 0:
+            plt.plot(x, u_prev, label="num: " + str(j))
+            plt.grid()
     
         u_next = np.zeros(nodes) 
         
@@ -42,7 +42,11 @@ def lax_ven(u0, K, T, nodes, f_path, x):
         
         save_results(u_next, f_path, j+1)
         u_prev = u_next
-
+        j += t
+        count += 1
+        
+    plt.legend()
+    plt.show()
     
 f_path = "out_lax-ven.csv"
 
@@ -56,8 +60,9 @@ K = float(input("t/h: "))
 h = 0.5
 t = K*h
 nodes = int(L/h + 1)
+step_plot = int(int(T/t)/5)
 
 x = np.linspace(0, L, nodes)
 u0 = np.sin(4*pi*x/L)
 
-lax_ven(u0, K, T, nodes, f_path, x)
+lax_ven(u0, K, T, nodes, f_path, x, t, step_plot)

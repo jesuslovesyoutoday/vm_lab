@@ -4,8 +4,6 @@ import numpy as np
 from math import pi
 import matplotlib.pyplot as plt
 
-# TODO: animate results
-
 def save_results(u, f_path, n):
 
     num = np.array([n])
@@ -16,16 +14,17 @@ def save_results(u, f_path, n):
     writer.writerow(U)
     f.close()
 
-def ugolok(u0, h, t, T, L, nodes, f_path, x):
+def ugolok(u0, h, t, T, L, nodes, f_path, x, step_plot):
 
     u_prev = u0
     save_results(u_prev, f_path, 0)
-    for j in range(T):
+    j = 0
+    count = 0
+    while j < T:
     
-        plt.plot(x, u_prev)
-        plt.title("num: " + str(j))
-        plt.grid()
-        plt.show()
+        if (count % step_plot) == 0:
+            plt.plot(x, u_prev, label="num: " + str(j))
+            plt.grid()
     
         u_next = np.zeros(nodes)
             
@@ -35,6 +34,11 @@ def ugolok(u0, h, t, T, L, nodes, f_path, x):
         u_next[0] = u_next[len(u_next)-1]
         save_results(u_next, f_path, j+1)
         u_prev = u_next
+        j += t
+        count += 1
+        
+    plt.legend()
+    plt.show()
         
     
 f_path = "out_ugolok.csv"
@@ -45,14 +49,16 @@ if (os.path.exists(f_path)):
 L = 20
 T = 18
 K = float(input("t/h: "))
+moments = [0, 5, 10, 15, 18]
 
 h = 0.5
 t = K*h
 nodes = int(L/h + 1)
+step_plot = int(int(T/t)/5)
 
 x = np.linspace(0, L, nodes)
 u0 = np.sin(4*pi*x/L)
 
-ugolok(u0, h, t, T, L, nodes, f_path, x)
+ugolok(u0, h, t, T, L, nodes, f_path, x, step_plot)
 
 
