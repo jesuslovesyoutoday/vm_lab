@@ -22,10 +22,10 @@ def print_results(Y, Y_, a, b, sections):
             y_.append(Y_[i])
 
     d = norm(y, y_)
-    df = pd.DataFrame({'x': x, 'Y_mod': y, 'Y': y_, 'delta': d})
+    df = pd.DataFrame({'x': x, 'Y_an': y, 'Y_num': y_, 'delta': d})
     print(df)
     print('\nmax delta: ', d.max())
-    df.to_csv('out.csv', sep = ',', index=False)
+    #df.to_csv('out.csv', sep = ',', index=False)
 
 def analit(x, t, T, X, tau, h):
     u = np.zeros((T, X))
@@ -60,7 +60,7 @@ def numerical(x, t, T, X, tau, h):
     
 nodes = int(input()) + 1
 h = 1/(nodes-1)
-tau = h/10
+tau = h/5
 nodes_t = int(1/tau)
 
 x = np.linspace(0, 1, nodes)
@@ -73,8 +73,8 @@ print_results(u[1], U[1], 0, 1, nodes)
 
 plt.plot(x, u[0], label='аналит. t = 0')
 plt.plot(x, U[0], label='числен. t = 0')
-plt.plot(x, u[nodes_t-1], label='аналит. t = 0')
-plt.plot(x, U[nodes_t-1], label='числен. t = 0')
+plt.plot(x, u[nodes_t-1], label='аналит. t = 1')
+plt.plot(x, U[nodes_t-1], label='числен. t = 1')
 plt.legend()
 plt.grid()
 plt.show()
