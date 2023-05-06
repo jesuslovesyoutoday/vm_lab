@@ -24,12 +24,11 @@ def make_tau(X, Y, hx, hy):
     N_min = log(2/1e-3) / log((sqrt(max_mu) + sqrt(min_mu))/(sqrt(max_mu) - sqrt(min_mu)))
     print("N >= ", N_min)
     r = int(log2(N_min)) + 1
+    #r = 5
     n = make_n(r)
-    print(n)
     N = len(n)
     print("N: ", N, "\n")
     tauu = [2/((max_mu + min_mu) + (max_mu - min_mu)*cos(pi*(2*i-1)/(2*N))) for i in range(N)]
-    print(tauu)
     tau = []
     for i in n:
         tau.append(tauu[i-1])
@@ -62,7 +61,7 @@ def numerical(x, y, X, Y, hx, hy, u, tau):
     return u
 
 
-X = Y = 100
+X = Y = 82
 
 x = np.linspace(-0.5, 0.5, X)
 y = np.linspace(0, 1, Y)
@@ -70,19 +69,19 @@ hx = 1/(X-1)
 hy = 1/(Y-1)
 
 tau = make_tau(X, Y, hx, hy)
-print(tau)
+#print(tau)
 u = null_cond(x, y, X, Y, hx, hy)
 U = numerical(x, y, X, Y, hx, hy, u, tau)
 
 u_an = analit(x, y, X, Y)
 u_num = U
 
-plt.imshow(u_an)
+"""plt.imshow(u_an)
 plt.colorbar()
 plt.show()
 plt.imshow(u_num)
 plt.colorbar()
-plt.show()
+plt.show()"""
 
 np.set_printoptions(precision=4)
 

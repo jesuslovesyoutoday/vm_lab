@@ -61,7 +61,7 @@ def numerical(x, t, T, X, tau, h):
     #plt.show()
     return u
             
-cur = 0.13
+cur = 0.1
 nodes = int(input()) + 1
 h = 1/(nodes-1)
 tau = h*cur
@@ -74,13 +74,13 @@ u = analit(x, t, nodes_t, nodes, tau, h)
 U = numerical(x, t, nodes_t, nodes, tau, h)
 print_results(u[nodes_t-1], U[nodes_t-1], 0, 1, nodes)
 
-plt.plot(x, u[0], label='аналит. t = 0')
+"""plt.plot(x, u[0], label='аналит. t = 0')
 plt.plot(x, U[0], label='числен. t = 0')
 plt.plot(x, u[nodes_t-1], label='аналит. t = 1')
 plt.plot(x, U[nodes_t-1], label='числен. t = 1')
 plt.legend()
 plt.grid()
-plt.show()
+plt.show()"""
 
 
             
